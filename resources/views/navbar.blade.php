@@ -2,12 +2,12 @@
   <div class="container">
     <!-- ブランド表示 -->
     <a class="navbar-brand" href="{{ route('home') }}">Handmade shop</a>
- 
+
     <!-- スマホやタブレットで表示した時のメニューボタン -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
- 
+
     <!-- メニュー -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- 左寄せメニュー -->
@@ -15,11 +15,8 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ route('home') }}">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('about') }}">About</a>
-        </li>
       </ul>
- 
+
       <!-- 右寄せメニュー -->
       <ul class="navbar-nav">
         @guest
@@ -34,18 +31,13 @@
           </li>
         @else
           <!-- ログインしている時のメニュー -->
-          <li class="nav-item">
-            {{-- ④ --}}
-            <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
-          </li>
- 
           <!-- ドロップダウンメニュー -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {{-- ⑤ --}}
               {{ Auth::user()->name }} <span class="caret"></span>
             </a>
- 
+
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
               {{-- ⑥ --}}
               <a class="dropdown-item" href="#"
