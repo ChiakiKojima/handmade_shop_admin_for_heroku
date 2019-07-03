@@ -11,7 +11,7 @@
         @endauth
     </h1>
     <hr/>
-    
+
     <div class="row">
         @foreach($items as $item)
             <div class="col-lg-4">
@@ -27,9 +27,9 @@
                     </div>
                 </div>
             </div>
-        
+
         @endforeach
     </div>
 
-    
+
 @endsection
