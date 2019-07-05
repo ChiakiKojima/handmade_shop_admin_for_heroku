@@ -12,7 +12,7 @@
         </div>
         <div class="col-lg-6">
             <div class = "description">
-                {{ $item->description }}<br>
+                {{ nl2br($item->description) }}<br>
                 {{ $item->comma_price }}円<br>
                 @if ($item->available === 1)
                 在庫： あり
