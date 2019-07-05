@@ -39,14 +39,13 @@ class ItemsController extends Controller
             Cloudder::upload($file_name, null);
             // 直前にアップロードした画像のユニークIDを取得します。
             $publicId = Cloudder::getPublicId();
-            // URLを生成
-            $image_url = Cloudder::secureShow($publicId);
+            // dump($publicId);
             //laravelにアップロードして保存
             // $temp_path = $request->file('thefile')->storeAs('public/images', $file_name.'.jpeg');
             //読込先と保存先が異なるので、bladeで表示させるためのファイルパスに変換
             // $read_path = str_replace('public/', 'storage/', $temp_path);
             //データベースにまとめて保存するため、配列に$read_path(imageファイルのパス)を追加
-            $data['image'] = $image_url;
+            $data['image'] = $publicId;
         }
         Item::create($data);
         \Flash::success('商品を登録しました。');
@@ -62,16 +61,25 @@ class ItemsController extends Controller
 
     public function update(ItemRequest $request, $id) {
         $item = Item::findOrFail($id);
-        $image = $item->image;
+        $publicId = $item->image;
         $data = $request->validated();
-        if ($request->file('thefile')) {
-            File::delete($image);
-            $temp_path = $request->file('thefile')->storeAs('public/images', $item['created_at'].'.jpeg');
-            $read_path = str_replace('public/', 'storage/', $temp_path);
-            $data['image'] = $read_path;
-            // if ($image !== $read_path) {
-            //     File::delete($image);
-            // }
+        if ($file = $request->file('thefile')) {
+            if (!is_null($publicId)) {
+              // \Cloudinary\Uploader::destroy($publicId);
+                Cloudder::destroyImage($publicId, null);
+                Cloudder::delete($publicId, null);
+                //dump($publicId);
+            };
+            //dd($data);
+            $file_name = $file->getRealPath();
+            Cloudder::upload($file_name, null);
+            $publicId = Cloudder::getPublicId();
+            $data['image'] = $publicId;
+            // File::delete($image);
+            // $temp_path = $request->file('thefile')->storeAs('public/images', $item['created_at'].'.jpeg');
+            // $read_path = str_replace('public/', 'storage/', $temp_path);
+            // $data['image'] = $read_path;
+
         }
         $item->update($data);
 
@@ -81,10 +89,12 @@ class ItemsController extends Controller
     }
     public function destroy($id) {
         $item = Item::findOrFail($id);
-        $image = $item->image;
+        $publicId = $item->image;
+        Cloudder::destroyImage($publicId);
+        Cloudder::delete($publicId);
         $item->delete();
         //laravel_shopping内の写真fileも削除する
-        File::delete($image);
+        // File::delete($image);
         \Flash::success('商品を削除しました。');
         return redirect()->route('items.index');
     }
