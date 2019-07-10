@@ -12,12 +12,12 @@
         </div>
         <div class="col-lg-6">
             <div class = "description">
-                {{ nl2br($item->description) }}<br>
-                {{ $item->comma_price }}円<br>
+                <p>{!! nl2br(e($item->description)) !!}</p>
+                <p>{{ $item->comma_price }}円</p>
                 @if ($item->available === 1)
-                在庫： あり
+                <p>在庫： あり</p>
                 @else
-                在庫： なし
+                <p>在庫： なし</p>
                 @endif
             </div>
 
